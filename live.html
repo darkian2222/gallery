@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Clone with Profile Gallery</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fafafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top navigation bar */
+        nav {
+            background-color: #fff;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        nav .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        nav .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 24px;
+        }
+
+        nav .nav-icons img {
+            width: 25px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        /* Home and Profile Sections */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 70px auto 0 auto; /* Space for the fixed nav bar */
+            background-color: #fff;
+            border: 1px solid #dbdbdb;
+            border-radius: 5px;
+            overflow: hidden;
+            display: none; /* Hide sections by default */
+        }
+
+        /* Display only the home section on page load */
+        #home {
+            display: block;
+        }
+
+        .post {
+            border-bottom: 1px solid #dbdbdb;
+            padding-bottom: 15px;
+        }
+
+        .post img {
+            width: 100%;
+        }
+
+        .post .user-info {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .post .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .post .user-info .username {
+            font-weight: bold;
+        }
+
+        .post .post-actions {
+            padding: 0 15px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .post .post-actions img {
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .post .caption {
+            padding: 0 15px;
+            margin-top: 5px;
+        }
+
+        /* Profile Section */
+        .profile {
+            padding: 20px;
+            text-align: center;
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column; /* Stack profile picture and info vertically */
+            align-items: center; /* Center the profile picture and info */
+            margin-bottom: 20px; /* Add some space below the header */
+        }
+
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .profile h2 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .profile-info p {
+            margin: 5px 0;
+        }
+
+        /* Profile Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 150px; /* Adjust height as needed */
+            background-color: #eaeaea; /* Placeholder color */
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 0;
+        }
+
+        /* Likes Section */
+        .video-container {
+            margin-top: 20px;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            max-width: 500px; /* Set the desired maximum width */
+            margin-left: auto; /* Center horizontally */
+            margin-right: auto; /* Center horizontally */
+        }
+
+        video {
+            width: 100%; /* Full width of the container */
+            height: auto; /* Maintain aspect ratio */
+            max-width: 100%; /* Ensure it doesn't exceed container width */
+            border-radius: 5px; /* Optional: rounded corners */
+            margin-bottom: 10px; /* Space between videos */
+        }
+
+        /* Footer */
+        footer {
+            background-color: #fff;
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #dbdbdb;
+            margin-top: 10px;
+        }
+
+        footer p {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            nav .nav-container {
+                width: 100%;
+                padding: 0 15px;
+            }
+
+            .post .user-info img {
+                width: 35px;
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<nav>
+    <div class="nav-container">
+        <div class="logo">CrysTalizedd</div>
+        <div class="nav-icons">
+            <img src="https://img.icons8.com/material-outlined/24/home--v2.png" alt="Home" onclick="showSection('home')">
+            <img src="https://img.icons8.com/material-outlined/24/search--v1.png" alt="Search" onclick="showSection('search')">
+            <img src="https://img.icons8.com/material-outlined/24/filled-like.png" alt="Likes" onclick="showSection('likes')">
+            <img src="https://img.icons8.com/material-outlined/24/user.png" alt="Profile" onclick="showSection('profile')">
+        </div>
+    </div>
+</nav>
+
+<!-- Home Section -->
+<div id="home" class="container">
+    <div class="post">
+        <div class="user-info">
+            <img src="4.jpg" alt="User profile picture">
+            <span class="username">Crystal Joy</span>
+        </div>
+        <img src="6.jpeg" alt="Post image">
+        <div class="post-actions">
+            <img src="https://img.icons8.com/ios-glyphs/30/like--v1.png" alt="Like">
+            <img src="https://img.icons8.com/material-outlined/24/speech-bubble--v1.png" alt="Comment">
+            <img src="https://img.icons8.com/material-outlined/24/sent.png" alt="Share">
+        </div>
+        <div class="caption">
+            <p><strong>Crystal Joy</strong> #The day i won't forget in my life and the day i dance with you my man <3333</p>
+        </div>
+    </div>
+
+    <div class="post">
+        <div class="user-info">
+            <img src="4.jpg" alt="User profile picture">
+            <span class="username">Crystal Joy</span>
+        </div>
+        <img src="ily.jpeg" alt="Post image">
+        <div class="post-actions">
+            <img src="https://img.icons8.com/ios-glyphs/30/like--v1.png" alt="Like">
+            <img src="https://img.icons8.com/material-outlined/24/speech-bubble--v1.png" alt="Comment">
+            <img src="https://img.icons8.com/material-outlined/24/sent.png" alt="Share">
+        </div>
+        <div class="caption">
+            <p><strong>Crystal Joy</strong> DANCIN' WITH HIM <333! #Dance #Debut</p>
+        </div>
+    </div>
+</div>
+
+<div id="search" class="container profile">
+    <div class="profile-header">
+        <img src="y.jpg" alt="Profile picture">
+        <div class="profile-info">
+            <h2>Jeremy Pagente</h2>
+            <p>Posts: 6</p>
+            <p>Followers: 150</p>
+            <p>Following: 1</p>
+        </div>
+    </div>
+    <div class="gallery">
+        <div class="gallery-item"><img src="my.jpeg" alt="Image 1"></div>
+        <div class="gallery-item"><img src="r.jpg" alt="Image 2"></div>
+        <div class="gallery-item"><img src="je.jpg" alt="Image 3"></div>
+        <div class="gallery-item"><img src="re.jpeg" alt="Image 4"></div>
+        <div class="gallery-item"><img src="wew.jpg" alt="Image 5"></div>
+        <div class="gallery-item"><img src="m.jpg" alt="Image 7"></div>
+    </div>
+</div>
+
+<!-- Likes Section with Videos -->
+<div id="likes" class="container profile">
+    <div class="profile-header">
+        <img src="4.jpg" alt="Profile picture">
+        <div class="profile-info">
+            <h2>Your Likes</h2>
+        </div>
+    </div>
+    
+    <div class="video-container">
+        <video id="video1" controls>
+            <source src="lolove.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <video id="video2" controls>
+            <source src="sadlife.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+<!-- Profile Section with Gallery -->
+<div id="profile" class="container profile">
+    <div class="profile-header">
+        <img src="4.jpg" alt="Profile picture">
+        <div class="profile-info">
+            <h2>username123</h2>
+            <p>Posts: 6</p>
+            <p>Followers: 100</p>
+            <p>Following: 50</p>
+        </div>
+    </div>
+
+    <div class="gallery">
+        <div class="gallery-item"><img src="1.jpg" alt="Image 1"></div>
+        <div class="gallery-item"><img src="2.jpg" alt="Image 2"></div>
+        <div class="gallery-item"><img src="3.jpg" alt="Image 3"></div>
+        <div class="gallery-item"><img src="4.jpg" alt="Image 4"></div>
+        <div class="gallery-item"><img src="5.jpg" alt="Image 5"></div>
+        <div class="gallery-item"><img src="7.jpg" alt="Image 7"></div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2024. And Still Counting the Days that we Started!</p>
+</footer>
+
+<!-- JavaScript to toggle between sections -->
+<script>
+    // Initialize a variable to keep track of the currently playing video
+    let currentlyPlayingVideo = null;
+
+    function showSection(section) {
+        // Hide all sections
+        document.getElementById('home').style.display = 'none';
+        document.getElementById('profile').style.display = 'none';
+        document.getElementById('likes').style.display = 'none';
+        document.getElementById('search').style.display = 'none'; // Hide the search section too
+
+        // Stop videos if they are playing
+        const video1 = document.getElementById('video1');
+        const video2 = document.getElementById('video2');
+        
+        // Pause the currently playing video if there is one
+        if (currentlyPlayingVideo && currentlyPlayingVideo !== section) {
+            const currentVideo = document.getElementById(currentlyPlayingVideo);
+            currentVideo.pause();
+            currentVideo.currentTime = 0; // Reset video playback
+        }
+
+        // Show the selected section
+        document.getElementById(section).style.display = 'block';
+
+        // Play the videos automatically if the likes section is shown
+        if (section === 'likes') {
+            // Play the first video by default
+            video1.play();
+            currentlyPlayingVideo = 'video1'; // Track currently playing video
+
+            // Set up an event listener to pause video1 if video2 starts playing
+            video2.onplay = function () {
+                video1.pause();
+                currentlyPlayingVideo = 'video2'; // Update the currently playing video
+            };
+
+            // Set up an event listener to pause video2 if video1 starts playing
+            video1.onplay = function () {
+                video2.pause();
+                currentlyPlayingVideo = 'video1'; // Update the currently playing video
+            };
+        } else {
+            currentlyPlayingVideo = null; // Reset tracking when not in likes section
+        }
+    }
+</script>
+
+</body>
+</html>
